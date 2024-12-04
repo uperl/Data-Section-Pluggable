@@ -29,6 +29,12 @@ my $hash = $dsp->get_data_section;
 my $data = $dsp->get_data_section($name);
 ```
 
+## add\_format
+
+```
+$dsp->add_format( $ext, $cb );
+```
+
 # AUTHOR
 
 Graham Ollis <plicease@cpan.org>
