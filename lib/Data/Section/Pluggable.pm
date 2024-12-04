@@ -93,7 +93,7 @@ package Data::Section::Pluggable {
 
     sub _format ($self, $name, $content) {
         $content = $self->_decode($content->@*);
-        if($name =~ /\.(.*?)$/ ) {
+        if($name =~ /\.(.*?)\z/ ) {
             my $ext = $1;
             return $self->_formats->{$ext}->($self, $content) if $self->_formats->{$ext};
         }
@@ -132,7 +132,7 @@ package Data::Section::Pluggable {
         while (@data) {
             my ($name_encoding, $content) = splice @data, 0, 2;
             my ($name, $encoding);
-            if($name_encoding =~ /^(.*)\s+\((.*?)\)\Z/) {
+            if($name_encoding =~ /^(.*)\s+\((.*?)\)$/) {
                 $name = $1;
                 $encoding = $2;
             } else {
@@ -154,6 +154,65 @@ package Data::Section::Pluggable {
         Carp::croak("$ext is already defined") if exists $self->_formats->{$ext};
         Carp::croak("callback is not a code reference") unless is_coderef $cb;
         $self->_formats->{$ext} = $cb;
-        $self;
+        return $self;
     }
+
+=head2 add_plugin
+
+ $dsp->add_plugin( $name, %args );
+
+=cut
+
+    sub add_plugin ($self, $name, %args) {
+        Carp::croak("plugin name must match [a-z][a-z0-9_]+, got $name")
+            unless $name =~ /^[a-z][a-z0-9_]+\z/;
+        my $class = join '::', 'Data', 'Section', 'Pluggable', 'Plugin', ucfirst($name =~ s/_(.)/uc($1)/egr);
+        my $pm    = ($class =~ s!::!/!gr) . ".pm";
+        require $pm;
+        my $plugin;
+        if($class->can("new")) {
+            $plugin = $class->new(%args);
+        } else {
+            if(%args) {
+                Carp::croak("extra arguments are not allowed for class plugins (hint create constructor)");
+            }
+            $plugin = $class;
+        }
+
+        my @extensions = $plugin->extensions;
+        Carp::croak("extensions method returned no extensions") unless @extensions;
+
+        my $cb = sub ($self, $content) {
+            return $plugin->process_content($self, $content);
+        };
+
+        $self->add_format($_, $cb) for @extensions;
+
+        return $self;
+    }
+
 }
+
+# reserve these for future use
+package Data::Section::Pluggable::Plugin {}
+package Data::Section::Pluggable::Role {}
+
+=head1 SEE ALSO
+
+=over 4
+
+=item L<Data::Section>
+
+=item L<Data::Section::Simple>
+
+=item L<Data::Section::Writer>
+
+=item L<Mojo::Loader>
+
+=item L<Data::Section::Pluggable::Plugin::Json>
+
+=item L<Data::Section::Pluggable::Role::Plugin>
+
+=back
+
+=cut

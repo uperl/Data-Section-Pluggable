@@ -35,6 +35,21 @@ my $data = $dsp->get_data_section($name);
 $dsp->add_format( $ext, $cb );
 ```
 
+## add\_plugin
+
+```
+$dsp->add_plugin( $name, %args );
+```
+
+# SEE ALSO
+
+- [Data::Section](https://metacpan.org/pod/Data::Section)
+- [Data::Section::Simple](https://metacpan.org/pod/Data::Section::Simple)
+- [Data::Section::Writer](https://metacpan.org/pod/Data::Section::Writer)
+- [Mojo::Loader](https://metacpan.org/pod/Mojo::Loader)
+- [Data::Section::Pluggable::Plugin::Json](https://metacpan.org/pod/Data::Section::Pluggable::Plugin::Json)
+- [Data::Section::Pluggable::Role::Plugin](https://metacpan.org/pod/Data::Section::Pluggable::Role::Plugin)
+
 # AUTHOR
 
 Graham Ollis <plicease@cpan.org>
