@@ -59,6 +59,8 @@ package Data::Section::Pluggable {
 
     sub get_data_section ($self=undef, $name=undef) {
 
+        # handle being called as a function instead of
+        # a method.
         unless(is_ref $self) {
             $name = $self;
             $self = __PACKAGE__->new(scalar caller);
@@ -68,7 +70,10 @@ package Data::Section::Pluggable {
         return undef unless $all;
 
         if (defined $name) {
-            return $all->{$name};
+            if(exists $all->{$name}) {
+                return $all->{$name};
+            }
+            return undef;
         } else {
             return $all;
         }
@@ -93,7 +98,14 @@ package Data::Section::Pluggable {
 
         my $all = {};
         while (@data) {
-            my ($name, $content) = splice @data, 0, 2;
+            my ($name_encoding, $content) = splice @data, 0, 2;
+            my ($name, $encoding);
+            if($name_encoding =~ /^(.*)\s+\((.*?)\)\Z/) {
+                $name = $1;
+                $encoding = $2;
+            } else {
+                $name = $name_encoding;
+            }
             $all->{$name} = $content;
         }
 
@@ -102,3 +114,4 @@ package Data::Section::Pluggable {
 }
 
 1;
+

@@ -47,4 +47,6 @@ done_testing;
 __DATA__
 @@ foo.txt
 hello world
+@@ foo.bin (base64)
+SGVsbG8gd29ybGQK
 __END__
