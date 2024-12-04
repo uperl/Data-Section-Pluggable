@@ -95,8 +95,7 @@ package Data::Section::Pluggable {
         $content = $self->_decode($content->@*);
         if($name =~ /\.(.*?)$/ ) {
             my $ext = $1;
-            $DB::single = 1;
-            return $self->_formats->{$ext}->($content) if $self->_formats->{$ext};
+            return $self->_formats->{$ext}->($self, $content) if $self->_formats->{$ext};
         }
         return $content;
     }
