@@ -6,9 +6,11 @@ is(
     object {
         prop isa => 'Data::Section::Pluggable';
         call package => 'main';
-        call [get_data_section => 'foo.txt'] => "hello world\n";
+        call [get_data_section => 'foo.txt'] => "plain hello world\n";
+        call [get_data_section => 'foo.bin'] => "Hello world\n";
         call get_data_section => hash {
-            field 'foo.txt' => "hello world\n";
+            field 'foo.txt' => "plain hello world\n";
+            field 'foo.bin' => "Hello world\n";
             etc;
         };
     },
@@ -46,7 +48,7 @@ done_testing;
 
 __DATA__
 @@ foo.txt
-hello world
+plain hello world
 @@ foo.bin (base64)
 SGVsbG8gd29ybGQK
 __END__
