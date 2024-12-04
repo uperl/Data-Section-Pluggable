@@ -11,9 +11,7 @@ my $post_diag;
 
 $modules{$_} = $_ for qw(
   Class::Tiny
-  DataInCode
   ExtUtils::MakeMaker
-  Foo
   Ref::Util
   Test2::V0
   Test::More
