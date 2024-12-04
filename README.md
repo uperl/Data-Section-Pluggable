@@ -14,11 +14,11 @@ Read structured data from \_\_DATA\_\_
 
 ## get\_data\_section
 
-```
-get_data_section;
-get_data_section $name;
-$dsp->get_data_section;
-$dsp->get_data_section($name);
+```perl
+my $hash = get_data_section;
+my $data = get_data_section $name;
+my $hash = $dsp->get_data_section;
+my $data = $dsp->get_data_section($name);
 ```
 
 # AUTHOR

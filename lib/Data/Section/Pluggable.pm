@@ -43,10 +43,10 @@ package Data::Section::Pluggable {
 
 =head2 get_data_section
 
- get_data_section;
- get_data_section $name;
- $dsp->get_data_section;
- $dsp->get_data_section($name);
+ my $hash = get_data_section;
+ my $data = get_data_section $name;
+ my $hash = $dsp->get_data_section;
+ my $data = $dsp->get_data_section($name);
 
 =cut
 
@@ -67,7 +67,7 @@ package Data::Section::Pluggable {
     }
 
     sub _get_all_data_sections ($self) {
-        my $d = do { no strict 'refs'; \*{$self->{package}."::DATA"} };
+        my $d = do { no strict 'refs'; \*{$self->package."::DATA"} };
         return undef unless defined fileno $d;
         seek $d, 0, 0;
         my $content = do { local $/; <$d> };
