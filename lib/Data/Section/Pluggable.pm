@@ -19,6 +19,7 @@ package Data::Section::Pluggable {
 
     use Class::Tiny qw( package );
     use Exporter qw( import );
+    use Ref::Util qw( is_ref );
 
     our @EXPORT_OK = qw( get_data_section );
 
@@ -49,12 +50,17 @@ package Data::Section::Pluggable {
 
 =cut
 
-    sub get_data_section {
-        my $self = ref $_[0] ? shift : __PACKAGE__->new(scalar caller);
-        if (@_) {
+    sub get_data_section ($self=undef, $name=undef) {
+
+        unless(is_ref $self) {
+            $name = $self;
+            $self = __PACKAGE__->new(scalar caller);
+        }
+
+        if (defined $name) {
             my $all = $self->_get_all_data_sections;
             return undef unless $all;
-            return $all->{$_[0]};
+            return $all->{$name};
         } else {
             return $self->_get_all_data_sections;
         }
