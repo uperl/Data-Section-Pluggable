@@ -26,6 +26,7 @@ package Data::Section::Pluggable {
     use Class::Tiny qw( package );
     use Exporter qw( import );
     use Ref::Util qw( is_ref is_plain_hashref );
+    use MIME::Base64 qw( decode_base64 );
 
     our @EXPORT_OK = qw( get_data_section );
 
@@ -71,12 +72,29 @@ package Data::Section::Pluggable {
 
         if (defined $name) {
             if(exists $all->{$name}) {
-                return $all->{$name};
+                return $self->_decode($all->{$name}->@*);
             }
             return undef;
         } else {
-            return $all;
+            return $self->_decode_all($all);
         }
+    }
+
+    sub _decode_all ($self, $all) {
+        my %new;
+        foreach my $key (keys %$all) {
+            $new{$key} = $self->_decode($all->{$key}->@*);
+        }
+        \%new;
+    }
+
+    sub _decode ($self, $content, $encoding) {
+        return $content unless $encoding;
+        if($encoding ne 'base64') {
+            require Carp;
+            Carp::croak("unknown encoding: $encoding");
+        }
+        return decode_base64($content);
     }
 
     sub _get_all_data_sections ($self) {
@@ -106,7 +124,7 @@ package Data::Section::Pluggable {
             } else {
                 $name = $name_encoding;
             }
-            $all->{$name} = $content;
+            $all->{$name} = [ $content, $encoding ];
         }
 
         return $all;
@@ -114,4 +132,3 @@ package Data::Section::Pluggable {
 }
 
 1;
-
