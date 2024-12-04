@@ -1,5 +1,6 @@
 use warnings;
 use 5.020;
+use true;
 use experimental qw( signatures );
 use stable qw( postderef );
 
@@ -157,5 +158,3 @@ package Data::Section::Pluggable {
         $self;
     }
 }
-
-1;

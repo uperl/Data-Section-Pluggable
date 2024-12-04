@@ -16,6 +16,7 @@ $modules{$_} = $_ for qw(
   Test2::V0
   Test::More
   stable
+  true
 );
 
 
