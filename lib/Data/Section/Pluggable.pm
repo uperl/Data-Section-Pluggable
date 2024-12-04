@@ -53,13 +53,13 @@ package Data::Section::Pluggable {
         my $self = ref $_[0] ? shift : __PACKAGE__->new(scalar caller);
         if (@_) {
             my $all = $self->get_data_section;
-            return unless $all;
+            return undef unless $all;
             return $all->{$_[0]};
         } else {
             my $d = do { no strict 'refs'; \*{$self->{package}."::DATA"} };
-            return unless defined fileno $d;
+            return undef unless defined fileno $d;
             seek $d, 0, 0;
-            my $content = join '', <$d>;
+            my $content = do { local $/; <$d> };
             $content =~ s/^.*\n__DATA__\n/\n/s; # for win32
             $content =~ s/\n__END__\n.*$/\n/s;
             my @data = split /^@@\s+(.+?)\s*\r?\n/m, $content;
