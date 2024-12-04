@@ -23,10 +23,11 @@ package Data::Section::Pluggable {
 
 =cut
 
-    use Class::Tiny qw( package );
+    use Class::Tiny qw( package _formats _cache );
     use Exporter qw( import );
-    use Ref::Util qw( is_ref is_plain_hashref );
+    use Ref::Util qw( is_ref is_plain_hashref is_coderef );
     use MIME::Base64 qw( decode_base64 );
+    use Carp ();
 
     our @EXPORT_OK = qw( get_data_section );
 
@@ -45,6 +46,7 @@ package Data::Section::Pluggable {
             my $package = caller 2;
             $self->package($package);
         }
+        $self->_formats({});
     }
 
 =head1 METHODS
@@ -72,32 +74,43 @@ package Data::Section::Pluggable {
 
         if (defined $name) {
             if(exists $all->{$name}) {
-                return $self->_decode($all->{$name}->@*);
+                return $self->_format($name, $all->{$name});
             }
             return undef;
         } else {
-            return $self->_decode_all($all);
+            return $self->_format_all($all);
         }
     }
 
-    sub _decode_all ($self, $all) {
+    sub _format_all ($self, $all) {
         my %new;
         foreach my $key (keys %$all) {
-            $new{$key} = $self->_decode($all->{$key}->@*);
+            $new{$key} = $self->_format($key, $all->{$key});
         }
         \%new;
+    }
+
+    sub _format ($self, $name, $content) {
+        $content = $self->_decode($content->@*);
+        if($name =~ /\.(.*?)$/ ) {
+            my $ext = $1;
+            $DB::single = 1;
+            return $self->_formats->{$ext}->($content) if $self->_formats->{$ext};
+        }
+        return $content;
     }
 
     sub _decode ($self, $content, $encoding) {
         return $content unless $encoding;
         if($encoding ne 'base64') {
-            require Carp;
             Carp::croak("unknown encoding: $encoding");
         }
         return decode_base64($content);
     }
 
     sub _get_all_data_sections ($self) {
+        return $self->_cache if $self->_cache;
+
         my $fh = do { no strict 'refs'; \*{$self->package."::DATA"} };
 
         return undef unless defined fileno $fh;
@@ -127,7 +140,20 @@ package Data::Section::Pluggable {
             $all->{$name} = [ $content, $encoding ];
         }
 
-        return $all;
+        return $self->_cache($all);
+    }
+
+=head2 add_format
+
+ $dsp->add_format( $ext, $cb );
+
+=cut
+
+    sub add_format ($self, $ext, $cb) {
+        Carp::croak("$ext is already defined") if exists $self->_formats->{$ext};
+        Carp::croak("callback is not a code reference") unless is_coderef $cb;
+        $self->_formats->{$ext} = $cb;
+        $self;
     }
 }
 
