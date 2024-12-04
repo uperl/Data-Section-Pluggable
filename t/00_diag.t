@@ -14,6 +14,7 @@ $modules{$_} = $_ for qw(
   DataInCode
   ExtUtils::MakeMaker
   Foo
+  Ref::Util
   Test2::V0
   Test::More
   stable
