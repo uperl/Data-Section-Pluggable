@@ -11,8 +11,13 @@ my $post_diag;
 
 $modules{$_} = $_ for qw(
   Class::Tiny
+  Cpanel::JSON::XS
   ExtUtils::MakeMaker
+  JSON::MaybeXS
+  JSON::PP
+  JSON::XS
   Ref::Util
+  Role::Tiny
   Test2::V0
   Test::More
   stable

@@ -14,3 +14,4 @@ pod_coverage:
   private:
     - .*#BUILD
     - .*#BUILDARGS
+    - Data::Section::Pluggable::Plugin::Json
