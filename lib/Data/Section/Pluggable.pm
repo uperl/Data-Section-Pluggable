@@ -57,12 +57,13 @@ package Data::Section::Pluggable {
             $self = __PACKAGE__->new(scalar caller);
         }
 
+        my $all = $self->_get_all_data_sections;
+        return undef unless $all;
+
         if (defined $name) {
-            my $all = $self->_get_all_data_sections;
-            return undef unless $all;
             return $all->{$name};
         } else {
-            return $self->_get_all_data_sections;
+            return $all;
         }
     }
 
