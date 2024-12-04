@@ -14,6 +14,7 @@ package Data::Section::Pluggable {
 =head1 CONSTRUCTOR
 
  my $dsp = Data::Section::Pluggable->new($package);
+ my $dsp = Data::Section::Pluggable->new(\%attributes);
  my $dsp = Data::Section::Pluggable->new(%attributes);
 
 =head1 ATTRIBUTES
