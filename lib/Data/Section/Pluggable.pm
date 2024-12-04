@@ -67,19 +67,28 @@ package Data::Section::Pluggable {
     }
 
     sub _get_all_data_sections ($self) {
-        my $d = do { no strict 'refs'; \*{$self->package."::DATA"} };
-        return undef unless defined fileno $d;
-        seek $d, 0, 0;
-        my $content = do { local $/; <$d> };
+        my $fh = do { no strict 'refs'; \*{$self->package."::DATA"} };
+
+        return undef unless defined fileno $fh;
+
+        # Question: does this handle corner case where perl
+        # file is just __DATA__ section?
+        seek $fh, 0, 0;
+        my $content = do { local $/; <$fh> };
         $content =~ s/^.*\n__DATA__\n/\n/s; # for win32
         $content =~ s/\n__END__\n.*$/\n/s;
+
         my @data = split /^@@\s+(.+?)\s*\r?\n/m, $content;
-        shift @data; # trailing whitespaces
+
+        # trailing whitespace
+        shift @data;
+
         my $all = {};
         while (@data) {
             my ($name, $content) = splice @data, 0, 2;
             $all->{$name} = $content;
         }
+
         return $all;
     }
 }
