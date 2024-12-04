@@ -11,6 +11,11 @@ package Data::Section::Pluggable {
 
 =head1 DESCRIPTION
 
+=head1 CONSTRUCTOR
+
+ my $dsp = Data::Section::Pluggable->new($package);
+ my $dsp = Data::Section::Pluggable->new(%attributes);
+
 =head1 ATTRIBUTES
 
 =head2 package
@@ -19,12 +24,13 @@ package Data::Section::Pluggable {
 
     use Class::Tiny qw( package );
     use Exporter qw( import );
-    use Ref::Util qw( is_ref );
+    use Ref::Util qw( is_ref is_plain_hashref );
 
     our @EXPORT_OK = qw( get_data_section );
 
     sub BUILDARGS ($class, @args) {
         if(@args == 1) {
+            return $args[0] if is_plain_hashref $args[0];
             return { package => $args[0] };
         } else {
             my %args = @args;

@@ -6,6 +6,13 @@ Read structured data from \_\_DATA\_\_
 
 # DESCRIPTION
 
+# CONSTRUCTOR
+
+```perl
+my $dsp = Data::Section::Pluggable->new($package);
+my $dsp = Data::Section::Pluggable->new(%attributes);
+```
+
 # ATTRIBUTES
 
 ## package
