@@ -52,25 +52,29 @@ package Data::Section::Pluggable {
     sub get_data_section {
         my $self = ref $_[0] ? shift : __PACKAGE__->new(scalar caller);
         if (@_) {
-            my $all = $self->get_data_section;
+            my $all = $self->_get_all_data_sections;
             return undef unless $all;
             return $all->{$_[0]};
         } else {
-            my $d = do { no strict 'refs'; \*{$self->{package}."::DATA"} };
-            return undef unless defined fileno $d;
-            seek $d, 0, 0;
-            my $content = do { local $/; <$d> };
-            $content =~ s/^.*\n__DATA__\n/\n/s; # for win32
-            $content =~ s/\n__END__\n.*$/\n/s;
-            my @data = split /^@@\s+(.+?)\s*\r?\n/m, $content;
-            shift @data; # trailing whitespaces
-            my $all = {};
-            while (@data) {
-                my ($name, $content) = splice @data, 0, 2;
-                $all->{$name} = $content;
-            }
-            return $all;
+            return $self->_get_all_data_sections;
         }
+    }
+
+    sub _get_all_data_sections ($self) {
+        my $d = do { no strict 'refs'; \*{$self->{package}."::DATA"} };
+        return undef unless defined fileno $d;
+        seek $d, 0, 0;
+        my $content = do { local $/; <$d> };
+        $content =~ s/^.*\n__DATA__\n/\n/s; # for win32
+        $content =~ s/\n__END__\n.*$/\n/s;
+        my @data = split /^@@\s+(.+?)\s*\r?\n/m, $content;
+        shift @data; # trailing whitespaces
+        my $all = {};
+        while (@data) {
+            my ($name, $content) = splice @data, 0, 2;
+            $all->{$name} = $content;
+        }
+        return $all;
     }
 }
 
