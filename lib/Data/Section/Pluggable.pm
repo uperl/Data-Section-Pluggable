@@ -102,4 +102,3 @@ package Data::Section::Pluggable {
 }
 
 1;
-
