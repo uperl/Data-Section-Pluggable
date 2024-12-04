@@ -116,7 +116,8 @@ package Data::Section::Pluggable {
         return undef unless defined fileno $fh;
 
         # Question: does this handle corner case where perl
-        # file is just __DATA__ section?
+        # file is just __DATA__ section?  turns out, yes!
+        # added test t/data_section_pluggable__data_only.t
         seek $fh, 0, 0;
         my $content = do { local $/; <$fh> };
         $content =~ s/^.*\n__DATA__\n/\n/s; # for win32
@@ -124,7 +125,7 @@ package Data::Section::Pluggable {
 
         my @data = split /^@@\s+(.+?)\s*\r?\n/m, $content;
 
-        # trailing whitespace
+        # extra at start whitespace, or __DATA_ for data only file
         shift @data;
 
         my $all = {};
