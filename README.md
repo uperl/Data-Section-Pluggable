@@ -10,6 +10,7 @@ Read structured data from \_\_DATA\_\_
 
 ```perl
 my $dsp = Data::Section::Pluggable->new($package);
+my $dsp = Data::Section::Pluggable->new(\%attributes);
 my $dsp = Data::Section::Pluggable->new(%attributes);
 ```
 
