@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 use Data::Section::Pluggable qw(get_data_section);
 use Test::More;
 

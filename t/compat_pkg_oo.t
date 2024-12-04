@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 use Data::Section::Pluggable;
 use lib 'corpus/lib';
 use Foo;
