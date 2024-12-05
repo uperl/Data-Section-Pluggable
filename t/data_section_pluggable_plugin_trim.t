@@ -16,6 +16,21 @@ is(
     'add_plugin',
 );
 
+is(
+    Data::Section::Pluggable->new,
+    object {
+        call [add_plugin => trim => extensions => ['txt','t']] => object {
+            prop isa => 'Data::Section::Pluggable';
+        };
+        call get_data_section => hash {
+            field 'foo.txt' => "here  \n  there";
+            field 'bar.t' => "here";
+            etc;
+        };
+    },
+    'add_plugin',
+);
+
 done_testing;
 
 __DATA__
