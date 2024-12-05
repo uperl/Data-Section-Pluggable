@@ -260,10 +260,6 @@ To write your own see L</PLUGIN ROLES>.
 
 }
 
-# reserve these for future use
-package Data::Section::Pluggable::Plugin {}
-package Data::Section::Pluggable::Role {}
-
 =head1 CORE PLUGINS
 
 =head2 json
