@@ -95,7 +95,9 @@ package Data::Section::Pluggable {
         $content = $self->_decode($content->@*);
         if($name =~ /\.(.*?)\z/ ) {
             my $ext = $1;
-            return $self->_formats->{$ext}->($self, $content) if $self->_formats->{$ext};
+            if($self->_formats->{$ext}) {
+                $content = $_->($self, $content) for $self->_formats->{$ext}->@*;
+            }
         }
         return $content;
     }
@@ -151,9 +153,8 @@ package Data::Section::Pluggable {
 =cut
 
     sub add_format ($self, $ext, $cb) {
-        Carp::croak("$ext is already defined") if exists $self->_formats->{$ext};
         Carp::croak("callback is not a code reference") unless is_coderef $cb;
-        $self->_formats->{$ext} = $cb;
+        push $self->_formats->{$ext}->@*, $cb;
         return $self;
     }
 
