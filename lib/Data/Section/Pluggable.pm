@@ -26,14 +26,14 @@ This module also supports C<base64> encoding using the same mechanism as L<Mojo:
 is helpful for putting binary sections in C<__DATA__>.
 
 As mentioned, this module aims to be and is largely a drop in replacement for L<Data::Section::Simple>
-with some extra features.  Here are the known ways in which it is not compatible.
+with some extra features.  Here are the known ways in which it is not compatible:
 
 =over 4
 
 =item
 
 Because L<Data::Section::Simple> does not support C<base64> encoded data, these data sections
-would include the C< (base64)> in the filename instead of decoding them.
+would include the C< (base64)> in the filename instead of decoding the content.
 
 =item
 
