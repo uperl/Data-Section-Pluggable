@@ -16,19 +16,26 @@ is(
             etc;
         };
 
-        call [add_format => 'txt' => sub ($, $c) { "||$c" }] => object {
+        call [add_format => txt => sub ($, $c) { "||$c" }] => object {
             # returns self.
             prop isa => 'Data::Section::Pluggable';
         };
 
         call [get_data_section => 'foo.txt'] => "||plain hello world\n";
 
-        call [add_format => 'bin' => sub ($, $c) { ">>$c" }] => object {
+        call [add_format => bin => sub ($, $c) { ">>$c" }] => object {
             # returns self.
             prop isa => 'Data::Section::Pluggable';
         };
 
         call [get_data_section => 'foo.bin'] => ">>Hello world\n";
+
+        call [add_format => bin => sub ($,$c) { "xx$c" }] => object {
+            # returns self.
+            prop isa => 'Data::Section::Pluggable';
+        };
+
+        call [get_data_section => 'foo.bin'] => "xx>>Hello world\n";
     },
     'all defaults',
 );
