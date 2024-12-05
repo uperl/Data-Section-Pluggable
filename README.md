@@ -5,8 +5,6 @@ Read structured data from \_\_DATA\_\_
 # SYNOPSIS
 
 ```perl
-use warnings;
-use 5.020;
 use Data::Section::Pluggable;
 
 my $dsp = Data::Section::Pluggable->new
