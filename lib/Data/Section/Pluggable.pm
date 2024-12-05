@@ -186,7 +186,16 @@ the default or use plugins.
 
 =head2 add_format
 
- $dsp->add_format( $ext, $cb );
+ $dsp->add_format( $ext, sub ($dsp, $content) { return ... } );
+
+Adds a content processor to the given filename extension.  The extension should be a filename
+extension without the C<.>, for example C<txt> or C<json>.
+
+The callback takes the L<Data::Section::Pluggable> instance as its first argument and the content
+to be processed as the second.  This callback should return the processed content as a scalar.
+
+You can chain multiple content processors to the same filename extension, and they will be
+called in the order that they were added.
 
 =cut
 
@@ -199,6 +208,10 @@ the default or use plugins.
 =head2 add_plugin
 
  $dsp->add_plugin( $name, %args );
+
+Applies the plugin with C<$name>.  If the plugin supports instance mode (that is: it has a constructor
+named C<new>), then C<%args> will be passed to the constructor.  For included plugins see L</CORE PLUGINS>.
+To write your own see L</PLUGIN ROLES>.
 
 =cut
 
@@ -246,7 +259,30 @@ the default or use plugins.
 package Data::Section::Pluggable::Plugin {}
 package Data::Section::Pluggable::Role {}
 
+=head1 CORE PLUGINS
+
+=head2 json
+
+Automatically decode json into Perl data structures.
+See L<Data::Section::Pluggable::Plugin::Json>.
+
+=head2 trim
+
+Automatically trim leading and trailing white space.
+See L<Data::Section::Pluggable::Plugin::Trim>.
+
+=head1 PLUGIN ROLES
+
+=head2 ContentProcessorPlugin
+
+Used for adding content processors for specific formats.  This
+is essentially a way to wrap the L<add_format method|/add_format>
+as a module.
+
 =head1 SEE ALSO
+
+These are some alternative modules that do a similar thing, each
+with their own feature set and limitations.
 
 =over 4
 
@@ -257,10 +293,6 @@ package Data::Section::Pluggable::Role {}
 =item L<Data::Section::Writer>
 
 =item L<Mojo::Loader>
-
-=item L<Data::Section::Pluggable::Plugin::Json>
-
-=item L<Data::Section::Pluggable::Role::ContentProcessorPlugin>
 
 =back
 
