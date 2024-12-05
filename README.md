@@ -50,10 +50,10 @@ This module also supports `base64` encoding using the same mechanism as [Mojo::L
 is helpful for putting binary sections in `__DATA__`.
 
 As mentioned, this module aims to be and is largely a drop in replacement for [Data::Section::Simple](https://metacpan.org/pod/Data::Section::Simple)
-with some extra features.  Here are the known ways in which it is not compatible.
+with some extra features.  Here are the known ways in which it is not compatible:
 
 - Because [Data::Section::Simple](https://metacpan.org/pod/Data::Section::Simple) does not support `base64` encoded data, these data sections
-would include the ` (base64)` in the filename instead of decoding them.
+would include the ` (base64)` in the filename instead of decoding the content.
 - When a section is not found [Data::Section::Simple](https://metacpan.org/pod/Data::Section::Simple) return the empty list from `get_data_section`,
 where as this module returns `undef`, in order to keep the return value more consistent.
 
