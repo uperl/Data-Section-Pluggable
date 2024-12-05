@@ -26,7 +26,7 @@ package Data::Section::Pluggable {
 
     use Class::Tiny qw( package _formats _cache );
     use Exporter qw( import );
-    use Ref::Util qw( is_ref is_plain_hashref is_coderef );
+    use Ref::Util qw( is_ref is_plain_hashref is_coderef is_plain_arrayref );
     use MIME::Base64 qw( decode_base64 );
     use Carp ();
 
@@ -180,6 +180,7 @@ package Data::Section::Pluggable {
         }
 
         my @extensions = $plugin->extensions;
+        @extensions = $extensions[0]->@* if is_plain_arrayref $extensions[0];
         Carp::croak("extensions method returned no extensions") unless @extensions;
 
         my $cb = sub ($self, $content) {
