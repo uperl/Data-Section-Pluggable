@@ -10,15 +10,31 @@ package Data::Section::Pluggable::Plugin::Trim {
 
 =head1 SYNOPSIS
 
+# EXAMPLE: examples/trim.pl
+
 =head1 DESCRIPTION
+
+This plugin trims leading and trailing whitespace from data in C<__DATA__>.
+This is sometimes useful or these data sections tend to include a lot of
+extra whitespace if you want to space the different sections apart.
+
+By default, this plugin only operates on files with the C<txt> extension,
+but you can override this with the L</extensions> property.
+
+=head1 PROPERTIES
+
+=head2 extensions
+
+ $dsp->plugin( 'trim', extensions => \@extensions );
+
+Array reference of filename extensions whitespace should be trimmed from.
+If not provided, only C<txt> will get trimmed.
 
 =head1 SEE ALSO
 
 =over 4
 
 =item L<Data::Section::Pluggable>
-
-=item L<Data::Section::Pluggable::Role::ContentProcessorPlugin>
 
 =back
 
