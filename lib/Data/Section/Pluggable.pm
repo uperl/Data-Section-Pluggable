@@ -282,7 +282,7 @@ See L<Data::Section::Pluggable::Plugin::Trim>.
 
 Used for adding content processors for specific formats.  This
 is essentially a way to wrap the L<add_format method|/add_format>
-as a module.
+as a module.  See L<Data::Section::Pluggable::Role::ContentProcessorPlugin>.
 
 =head1 SEE ALSO
 

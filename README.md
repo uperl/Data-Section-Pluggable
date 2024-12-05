@@ -129,7 +129,7 @@ See [Data::Section::Pluggable::Plugin::Trim](https://metacpan.org/pod/Data::Sect
 
 Used for adding content processors for specific formats.  This
 is essentially a way to wrap the [add\_format method](#add_format)
-as a module.
+as a module.  See [Data::Section::Pluggable::Role::ContentProcessorPlugin](https://metacpan.org/pod/Data::Section::Pluggable::Role::ContentProcessorPlugin).
 
 # SEE ALSO
 
