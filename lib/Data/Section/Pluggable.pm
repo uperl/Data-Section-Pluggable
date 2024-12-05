@@ -227,7 +227,7 @@ the default or use plugins.
         if($plugin->does('Data::Section::Pluggable::Role::ContentProcessorPlugin')) {
             my @extensions = $plugin->extensions;
             @extensions = $extensions[0]->@* if is_plain_arrayref $extensions[0];
-            Carp::croak("extensions method returned no extensions") unless @extensions;
+            die "extensions method for $class returned no extensions" unless @extensions;
 
             my $cb = sub ($self, $content) {
                 return $plugin->process_content($self, $content);
