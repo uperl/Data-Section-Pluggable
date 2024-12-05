@@ -10,15 +10,20 @@ package Data::Section::Pluggable::Plugin::Json {
 
 =head1 SYNOPSIS
 
+# EXAMPLE: examples/json.pl
+
 =head1 DESCRIPTION
+
+This plugin decodes json from C<__DATA__>.  It only applies to
+filenames with the C<.json> extension.  Under the covers it uses
+L<JSON::MaybeXS> so it is recommended that you also install
+L<Cpanel::JSON::XS> for better performance.
 
 =head1 SEE ALSO
 
 =over 4
 
 =item L<Data::Section::Pluggable>
-
-=item L<Data::Section::Pluggable::Role::ContentProcessorPlugin>
 
 =back
 
