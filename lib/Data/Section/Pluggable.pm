@@ -222,7 +222,8 @@ To write your own see L</PLUGIN ROLES>.
 
         my $class = join '::', 'Data', 'Section', 'Pluggable', 'Plugin', ucfirst($name =~ s/_(.)/uc($1)/egr);
         my $pm    = ($class =~ s!::!/!gr) . ".pm";
-        require $pm;
+
+        require $pm unless $self->_valid_plugin($class);
 
         my $plugin;
         if($class->can("new")) {
@@ -235,7 +236,7 @@ To write your own see L</PLUGIN ROLES>.
         }
 
         Carp::croak("$class is not a valid Data::Section::Pluggable plugin")
-            unless $plugin->can('does') && $plugin->does('Data::Section::Pluggable::Role::ContentProcessorPlugin');
+            unless $self->_valid_plugin($plugin);
 
         if($plugin->does('Data::Section::Pluggable::Role::ContentProcessorPlugin')) {
             my @extensions = $plugin->extensions;
@@ -251,6 +252,10 @@ To write your own see L</PLUGIN ROLES>.
         };
 
         return $self;
+    }
+
+    sub _valid_plugin ($self, $plugin) {
+        $plugin->can('does') && $plugin->does('Data::Section::Pluggable::Role::ContentProcessorPlugin');
     }
 
 }
