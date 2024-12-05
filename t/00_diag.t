@@ -16,10 +16,12 @@ $modules{$_} = $_ for qw(
   JSON::MaybeXS
   JSON::PP
   JSON::XS
+  Path::Tiny
   Ref::Util
   Role::Tiny
   Test2::V0
   Test::More
+  Test::Script
   stable
   true
 );

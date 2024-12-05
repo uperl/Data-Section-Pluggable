@@ -10,7 +10,37 @@ package Data::Section::Pluggable {
 
 =head1 SYNOPSIS
 
+# EXAMPLE: examples/synopsis.pl
+
 =head1 DESCRIPTION
+
+Data::Section::Simple is a module to extract data from C<__DATA__> section of Perl source file.
+This module started out as a fork of L<Data::Section::Simple> (itself based on L<Mojo::Loader>),
+and includes some of its tests to ensure compatibility, but it also includes features not
+available in either of those modules.
+
+This module caches the result of reading the C<__DATA__> section in the object if you use the OO
+interface.  It doesn't do any caching of the processing required of "formats" (see below).
+
+This module also supports C<base64> encoding using the same mechanism as L<Mojo::Loader>, which
+is helpful for putting binary sections in C<__DATA__>.
+
+As mentioned, this module aims to be and is largely a drop in replacement for L<Data::Section::Simple>
+with some extra features.  Here are the known ways in which it is not compatible.
+
+=over 4
+
+=item
+
+Because L<Data::Section::Simple> does not support C<base64> encoded data, these data sections
+would include the C< (base64)> in the filename instead of decoding them.
+
+=item
+
+When a section is not found L<Data::Section::Simple> return the empty list from C<get_data_section>,
+where as this module returns C<undef>, in order to keep the return value more consistent.
+
+=back
 
 =head1 CONSTRUCTOR
 
@@ -21,6 +51,9 @@ package Data::Section::Pluggable {
 =head1 ATTRIBUTES
 
 =head2 package
+
+The name of the package to read from C<__DATA__>.  If not specified, then
+the current package will be used.
 
 =cut
 
@@ -58,6 +91,11 @@ package Data::Section::Pluggable {
  my $data = get_data_section $name;
  my $hash = $dsp->get_data_section;
  my $data = $dsp->get_data_section($name);
+
+Gets data from C<__DATA_>.  This can be called either as a function (which is
+optionally exported from this module), or as an object method.  Creating an
+instance of L<Data::Section::Pluggable> allows you to use packages other than
+the default or use plugins.
 
 =cut
 
