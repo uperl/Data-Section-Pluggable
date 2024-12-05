@@ -10,13 +10,30 @@ package Data::Section::Pluggable::Role::ContentProcessorPlugin {
 
 =head1 SYNOPSIS
 
+Instance mode:
+
 # EXAMPLE: examples/content_processor_plugin.pl
+
+Class mode:
+
+# EXAMPLE: examples/content_processor_plugin_class.pl
 
 =head1 DESCRIPTION
 
 This plugin role provides a simple wrapper mechanism around
 the L<Data::Section::Pluggable> L<method add_format|/add_format>,
 making it an appropriate way to add such recipes to CPAN.
+
+=head1 CONSTRUCTOR
+
+=head1 new
+
+ my $class->new(%args);  # optional
+
+If a constructor C<new> is provided, it will be called when the plugin
+is added to create an instance of the plugin.  The methods below will
+be called as instance methods.  Otherwise the methods will be called
+as class methods.
 
 =head1 METHODS
 

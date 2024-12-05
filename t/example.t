@@ -7,7 +7,7 @@ use lib 't/lib';
 
 my $path = path(__FILE__)->parent(2)->child('examples');
 
-foreach my $script ($path->children)
+foreach my $script (sort { $a->basename cmp $b->basename } $path->children)
 {
   next unless $script->basename =~ /\.pl\z/;
   subtest "$script" => sub {
