@@ -18,7 +18,7 @@ package Data::Section::Pluggable::Plugin::Json {
 
 =item L<Data::Section::Pluggable>
 
-=item L<Data::Section::Pluggable::Role::Plugin>
+=item L<Data::Section::Pluggable::Role::ContentProcessorPlugin>
 
 =back
 
@@ -27,7 +27,7 @@ package Data::Section::Pluggable::Plugin::Json {
     use Role::Tiny::With;
     use JSON::MaybeXS ();
 
-    with 'Data::Section::Pluggable::Role::Plugin';
+    with 'Data::Section::Pluggable::Role::ContentProcessorPlugin';
 
     sub extensions ($class) {
         return ('json');

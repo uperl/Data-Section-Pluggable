@@ -4,9 +4,9 @@ use true;
 use experimental qw( signatures );
 use stable qw( postderef );
 
-package Data::Section::Pluggable::Role::Plugin {
+package Data::Section::Pluggable::Role::ContentProcessorPlugin {
 
-    # ABSTRACT: Plugin role for Data::Section::Pluggable
+    # ABSTRACT: Plugin role for Data::Section::ContentProcessorPlugin
 
 =head1 SYNOPSIS
 
