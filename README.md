@@ -90,9 +90,18 @@ the default or use plugins.
 
 ## add\_format
 
+```perl
+$dsp->add_format( $ext, sub ($dsp, $content) { return ... } );
 ```
-$dsp->add_format( $ext, $cb );
-```
+
+Adds a content processor to the given filename extension.  The extension should be a filename
+extension without the `.`, for example `txt` or `json`.
+
+The callback takes the [Data::Section::Pluggable](https://metacpan.org/pod/Data::Section::Pluggable) instance as its first argument and the content
+to be processed as the second.  This callback should return the processed content as a scalar.
+
+You can chain multiple content processors to the same filename extension, and they will be
+called in the order that they were added.
 
 ## add\_plugin
 
@@ -100,14 +109,39 @@ $dsp->add_format( $ext, $cb );
 $dsp->add_plugin( $name, %args );
 ```
 
+Applies the plugin with `$name`.  If the plugin supports instance mode (that is: it has a constructor
+named `new`), then `%args` will be passed to the constructor.  For included plugins see ["CORE PLUGINS"](#core-plugins).
+To write your own see ["PLUGIN ROLES"](#plugin-roles).
+
+# CORE PLUGINS
+
+## json
+
+Automatically decode json into Perl data structures.
+See [Data::Section::Pluggable::Plugin::Json](https://metacpan.org/pod/Data::Section::Pluggable::Plugin::Json).
+
+## trim
+
+Automatically trim leading and trailing white space.
+See [Data::Section::Pluggable::Plugin::Trim](https://metacpan.org/pod/Data::Section::Pluggable::Plugin::Trim).
+
+# PLUGIN ROLES
+
+## ContentProcessorPlugin
+
+Used for adding content processors for specific formats.  This
+is essentially a way to wrap the [add\_format method](#add_format)
+as a module.
+
 # SEE ALSO
+
+These are some alternative modules that do a similar thing, each
+with their own feature set and limitations.
 
 - [Data::Section](https://metacpan.org/pod/Data::Section)
 - [Data::Section::Simple](https://metacpan.org/pod/Data::Section::Simple)
 - [Data::Section::Writer](https://metacpan.org/pod/Data::Section::Writer)
 - [Mojo::Loader](https://metacpan.org/pod/Mojo::Loader)
-- [Data::Section::Pluggable::Plugin::Json](https://metacpan.org/pod/Data::Section::Pluggable::Plugin::Json)
-- [Data::Section::Pluggable::Role::ContentProcessorPlugin](https://metacpan.org/pod/Data::Section::Pluggable::Role::ContentProcessorPlugin)
 
 # AUTHOR
 
