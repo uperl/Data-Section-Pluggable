@@ -48,7 +48,7 @@ $dsp->add_plugin( $name, %args );
 - [Data::Section::Writer](https://metacpan.org/pod/Data::Section::Writer)
 - [Mojo::Loader](https://metacpan.org/pod/Mojo::Loader)
 - [Data::Section::Pluggable::Plugin::Json](https://metacpan.org/pod/Data::Section::Pluggable::Plugin::Json)
-- [Data::Section::Pluggable::Role::Plugin](https://metacpan.org/pod/Data::Section::Pluggable::Role::Plugin)
+- [Data::Section::Pluggable::Role::ContentProcessorPlugin](https://metacpan.org/pod/Data::Section::Pluggable::Role::ContentProcessorPlugin)
 
 # AUTHOR
 

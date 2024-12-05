@@ -164,11 +164,14 @@ package Data::Section::Pluggable {
 =cut
 
     sub add_plugin ($self, $name, %args) {
+
         Carp::croak("plugin name must match [a-z][a-z0-9_]+, got $name")
             unless $name =~ /^[a-z][a-z0-9_]+\z/;
+
         my $class = join '::', 'Data', 'Section', 'Pluggable', 'Plugin', ucfirst($name =~ s/_(.)/uc($1)/egr);
         my $pm    = ($class =~ s!::!/!gr) . ".pm";
         require $pm;
+
         my $plugin;
         if($class->can("new")) {
             $plugin = $class->new(%args);
@@ -179,15 +182,21 @@ package Data::Section::Pluggable {
             $plugin = $class;
         }
 
-        my @extensions = $plugin->extensions;
-        @extensions = $extensions[0]->@* if is_plain_arrayref $extensions[0];
-        Carp::croak("extensions method returned no extensions") unless @extensions;
+        Carp::croak("$class is not a valid Data::Section::Pluggable plugin")
+            unless $plugin->can('does') && $plugin->does('Data::Section::Pluggable::Role::ContentProcessorPlugin');
 
-        my $cb = sub ($self, $content) {
-            return $plugin->process_content($self, $content);
+        if($plugin->does('Data::Section::Pluggable::Role::ContentProcessorPlugin')) {
+            my @extensions = $plugin->extensions;
+            @extensions = $extensions[0]->@* if is_plain_arrayref $extensions[0];
+            Carp::croak("extensions method returned no extensions") unless @extensions;
+
+            my $cb = sub ($self, $content) {
+                return $plugin->process_content($self, $content);
+            };
+
+            $self->add_format($_, $cb) for @extensions;
+
         };
-
-        $self->add_format($_, $cb) for @extensions;
 
         return $self;
     }
@@ -212,7 +221,7 @@ package Data::Section::Pluggable::Role {}
 
 =item L<Data::Section::Pluggable::Plugin::Json>
 
-=item L<Data::Section::Pluggable::Role::Plugin>
+=item L<Data::Section::Pluggable::Role::ContentProcessorPlugin>
 
 =back
 

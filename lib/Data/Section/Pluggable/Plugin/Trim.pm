@@ -18,7 +18,7 @@ package Data::Section::Pluggable::Plugin::Trim {
 
 =item L<Data::Section::Pluggable>
 
-=item L<Data::Section::Pluggable::Role::Plugin>
+=item L<Data::Section::Pluggable::Role::ContentProcessorPlugin>
 
 =back
 
@@ -28,7 +28,7 @@ package Data::Section::Pluggable::Plugin::Trim {
     use Role::Tiny::With;
     use Ref::Util qw( is_arrayref );
 
-    with 'Data::Section::Pluggable::Role::Plugin';
+    with 'Data::Section::Pluggable::Role::ContentProcessorPlugin';
 
     sub BUILD ($self, $) {
         if(defined $self->extensions) {
