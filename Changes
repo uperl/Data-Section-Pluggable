@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.02      2024-12-14 18:20:03 -0700
   - Added support for Data::Section::Pluggable::FormatContentPlugin if installed (gh#4)
   - Some documentation fixes (gh#4)
 
