@@ -2,7 +2,6 @@ use warnings;
 use 5.020;
 use true;
 use experimental qw( signatures );
-use stable qw( postderef );
 
 package Data::Section::Pluggable::Plugin::Json {
 
@@ -33,6 +32,9 @@ L<Cpanel::JSON::XS> for better performance.
     use JSON::MaybeXS ();
 
     with 'Data::Section::Pluggable::Role::ContentProcessorPlugin';
+    if(eval { require Data::Section::Pluggable::Role::FormatContentPlugin }) {
+        with 'Data::Section::Pluggable::Role::FormatContentPlugin';
+    }
 
     sub extensions ($class) {
         return ('json');
@@ -40,5 +42,9 @@ L<Cpanel::JSON::XS> for better performance.
 
     sub process_content ($class, $dsp, $content) {
         JSON::MaybeXS::decode_json($content);
+    }
+
+    sub format_content ($class, $dsw, $content) {
+        JSON::MaybeXS::encode_json($content);
     }
 }
