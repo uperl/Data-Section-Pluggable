@@ -45,6 +45,6 @@ L<Cpanel::JSON::XS> for better performance.
     }
 
     sub format_content ($class, $dsw, $content) {
-        JSON::MaybeXS::encode_json($content);
+        JSON::MaybeXS->new->pretty->canonical->encode($content);
     }
 }
