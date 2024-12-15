@@ -6,7 +6,7 @@ use stable qw( postderef );
 
 package Data::Section::Pluggable::Role::ContentProcessorPlugin {
 
-    # ABSTRACT: Plugin role for Data::Section::ContentProcessorPlugin
+    # ABSTRACT: Plugin role for Data::Section::Pluggable to process content
 
 =head1 SYNOPSIS
 
@@ -49,7 +49,7 @@ should apply to.
 
 =head2 process_content
 
- my $processed = $plugin->process_content($dps, $content);
+ my $processed = $plugin->process_content($dsp, $content);
 
 Takes the L<Data::Section::Pluggable> instance and content and returns
 the process content.
