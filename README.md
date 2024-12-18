@@ -111,6 +111,15 @@ Applies the plugin with `$name`.  If the plugin supports instance mode (that is:
 named `new`), then `%args` will be passed to the constructor.  For included plugins see ["CORE PLUGINS"](#core-plugins).
 To write your own see ["PLUGIN ROLES"](#plugin-roles).
 
+## extract
+
+```
+$dsp->extract($dir);
+$dsp->extract;
+```
+
+Extract all files in Data section to the given `$dir`, or if not provided the current directory.
+
 # CORE PLUGINS
 
 ## json

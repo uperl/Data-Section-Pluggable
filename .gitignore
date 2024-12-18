@@ -1,5 +1,4 @@
 Data-Section-Pluggable-*
 /.build/
 *.swp
-
-
+/.vscode
